@@ -1,0 +1,2 @@
+zsh_theme: alanpeabody
+zsh_plugins: [ 'git', 'laravel' ]

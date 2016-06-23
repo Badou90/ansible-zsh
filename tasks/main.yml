@@ -1,0 +1,25 @@
+---
+
+- name: Install zsh
+  yum: name=zsh state=latest
+
+- name: Install git
+  yum: name=git state=latest
+
+- name: Clone oh-my-zsh repo
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=~/.oh-my-zsh
+
+- name: Remove standart config
+  file: path=~/.zshrc state=absent
+
+- name: Create config folder in home directory
+  file: path=~/conf state=directory owner={{ ansible_user_id }}
+
+- name: Deploy config file
+  template: src=templates/zshrc.j2 dest=~/conf/zshrc owner={{ ansible_user_id }}
+
+- name: Create symlinc to zshrc
+  file: path=~/.zshrc src=~/conf/zshrc state=link owner={{ ansible_user_id }}
+
+- name: Set zsh as default shell
+  user: name={{ ansible_user_id }} shell=/bin/zsh
